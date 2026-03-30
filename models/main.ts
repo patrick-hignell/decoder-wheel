@@ -1,4 +1,4 @@
 export interface DiceIcon {
-  number: number
+  number: number | string
   dice: string
 }

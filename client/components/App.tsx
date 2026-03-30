@@ -1,8 +1,12 @@
-import { DiceIcon } from "../../models/main"
+import { useEffect, useState } from "react"
+import { DiceIcon, OptionType } from "../../models/main"
 import Dice from "./Dice"
-
+import Select, { SingleValue } from 'react-select'
 
 function App() {
+  const [key, setKey] = useState<OptionType>({ label: "2D6", value: { dice: "D6", number: 2 } })
+  const [turns, setTurns] = useState<number>(0)
+  const [message, setMessage] = useState<string>("")
   const outerWheel: DiceIcon[] = [
 {number: 1, dice: 'D4' },
 {number: 10, dice: 'D12' },
@@ -60,19 +64,6 @@ function App() {
 // {number: 12, dice: 'D12'}
 //   ]
   const innerWheel: DiceIcon[] = [
-    { number: 5, dice: 'D6' },
-    { number: 1, dice: 'D20' }, 
-    { number: 2, dice: 'D20' },
-    { number: 3, dice: 'D20' }, 
-    { number: 4, dice: 'D20' },
-    { number: 6, dice: 'D6' },
-    { number: 5, dice: 'D20' },
-    { number: 6, dice: 'D20' },
-    { number: 7, dice: 'D20' },
-    { number: 1, dice: 'D6' },
-    { number: 8, dice: 'D20' },
-    { number: 9, dice: 'D20' },
-    { number: 10, dice: 'D20' }, 
     { number: 2, dice: 'D6' },
     { number: 11, dice: 'D20' }, 
     { number: 12, dice: 'D20' },
@@ -85,7 +76,20 @@ function App() {
     { number: 4, dice: 'D6' },
     { number: 18, dice: 'D20' },
     { number: 19, dice: 'D20' },
-    { number: 20, dice: 'D20' }
+    { number: 20, dice: 'D20' },
+    { number: 5, dice: 'D6' },
+    { number: 1, dice: 'D20' }, 
+    { number: 2, dice: 'D20' },
+    { number: 3, dice: 'D20' }, 
+    { number: 4, dice: 'D20' },
+    { number: 6, dice: 'D6' },
+    { number: 5, dice: 'D20' },
+    { number: 6, dice: 'D20' },
+    { number: 7, dice: 'D20' },
+    { number: 1, dice: 'D6' },
+    { number: 8, dice: 'D20' },
+    { number: 9, dice: 'D20' },
+    { number: 10, dice: 'D20' }
   ]
 
 //   [
@@ -173,6 +177,17 @@ function App() {
   //   ]
   
   const letterWheel = [
+{number: "A", dice:'Blank'}, 
+{number: "B", dice:'Blank'},
+{number: "C", dice:'Blank'},
+{number: "D", dice:'Blank'},
+{number: "E", dice:'Blank'},
+{number: "F", dice:'Blank'},
+{number: "G", dice:'Blank'},
+{number: "H", dice:'Blank'},
+{number: "I", dice:'Blank'},
+{number: "J", dice:'Blank'},
+    { number: "K", dice: 'Blank' },
 {number: "L", dice:'Blank'},
 {number: "M", dice:'Blank'},
 {number: "N", dice:'Blank'},
@@ -187,34 +202,39 @@ function App() {
 {number: "W", dice:'Blank'},
 {number: "X", dice:'Blank'},
 {number: "Y", dice:'Blank'},
-{number: "Z", dice:'Blank'},
-{number: "A", dice:'Blank'}, 
-{number: "B", dice:'Blank'},
-{number: "C", dice:'Blank'},
-{number: "D", dice:'Blank'},
-{number: "E", dice:'Blank'},
-{number: "F", dice:'Blank'},
-{number: "G", dice:'Blank'},
-{number: "H", dice:'Blank'},
-{number: "I", dice:'Blank'},
-{number: "J", dice:'Blank'},
-{number: "K", dice:'Blank'}
+{number: "Z", dice:'Blank'}
   ]
 
   const outlineWheel = [
     {number:"", dice:"D20Outline"}
   ]
 
+  const keyOptions: OptionType[] =
+    innerWheel.map((dice) => { return { value: dice, label: `${dice.number}${dice.dice}` } }
+  )
+
   const outerRadius = 670
   const letterRadius = 560
   const innerRadius = 450
   const innerOffset = 13.8461538462
-  const innerTurns = 13
-  const letterTurns = 14
-  const outlineTurns = 3
+  const innerTurns = 0
+
+  useEffect(() => {
+    setTurns(innerWheel.findIndex((dice) => dice.number == key.value.number && dice.dice == key.value.dice))
+    console.log(turns)
+  }, [key])
 
   const showInner = true
   const showOuter = true
+
+  function handleKeyChange(e: SingleValue<OptionType>) {
+    if (e) setKey(e)
+    console.log(e)
+  }
+
+  function handleMessageChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    setMessage(event.target.value.toUpperCase());
+  };
 
   return (
       <div>
@@ -255,7 +275,7 @@ function App() {
             position: 'absolute',
             top: '100%',
             left: '50%',
-            transform: `rotate(${(i / innerWheel.length) * 360 + (innerOffset*outlineTurns)}deg) translateY(-${innerRadius}px)`,
+            transform: `rotate(${(i / innerWheel.length) * 360 + (innerOffset * turns)}deg) translateY(-${innerRadius}px)`,
           }}
         >
           <Dice {...dice} />
@@ -268,7 +288,7 @@ function App() {
             position: 'absolute',
             top: '100%',
             left: '50%',
-            transform: `rotate(${(i / letterWheel.length) * 360+ (innerOffset*letterTurns)}deg) translateY(-${letterRadius}px)`,
+            transform: `rotate(${(i / letterWheel.length) * 360+ (innerOffset * turns)}deg) translateY(-${letterRadius}px)`,
           }}
         >
           <Dice {...dice} />
@@ -297,7 +317,56 @@ function App() {
             top: '38%',
             left: '38%',
           }}></div> */}
-      <div className="h-[1000px]"></div>
+      <div className="h-[900px]"></div>
+      <div className="flex flex-col items-center w-full">
+      <div className="flex w-full justify-center gap-10">
+        <div className="flex-col flex w-96">
+          <p className="font-['Bellota'] text-4xl mb-4 ml-8">Select your key -</p>
+        <Select
+              className="ml-6 h-9 w-96 rounded"
+              id="name"
+              name="name"
+              options={keyOptions}
+              value={key}
+              onChange={handleKeyChange}
+              styles={{
+                control: (baseStyles) => ({
+                  ...baseStyles,
+                  borderWidth: '1px',
+                  borderColor: 'black',
+                }),
+                singleValue: (provided) => ({
+                  ...provided,
+                  color: 'black', // Set your desired color
+                }),
+              }}
+          />
+          </div>
+        <div className="flex-col flex w-96">
+        <p className="font-['Bellota'] text-4xl mb-4">Enter your text here -</p>
+          <textarea className="outline outline-black text-4xl" onChange={handleMessageChange}></textarea>
+          </div>
+      </div>
+        <div className="w-11/12 h-56 outline outline-black mt-12 flex p-6 items-center gap-3">
+          <Dice {...key.value} />
+          <p className="font-['Bellota'] text-8xl">|</p>
+          {message && [...message].map((char,index) => {
+            console.log(char)
+            const foundIndex = letterWheel.findIndex((dice) => dice.number === char);
+            const charIndex = foundIndex === -1 ? -1 : (foundIndex + turns) % letterWheel.length;
+            console.log(`charIndex: ${charIndex}`)
+            if (foundIndex !== -1) {
+              // console.log(`${outerWheel[charIndex].number}${outerWheel[charIndex].dice}`)
+              return (<Dice {...outerWheel[charIndex]} key={`codedMessage${index}`} />)
+            }
+            else
+            {
+              return (<p className="font-['Bellota'] text-8xl" key={`codedMessage${index}`}>{char}</p>)
+            }
+        })}
+      </div>
+      <div className="h-[200px]"></div>
+      </div>
       </div>
   )
 }

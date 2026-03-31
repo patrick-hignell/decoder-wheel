@@ -238,9 +238,7 @@ function App() {
 
   return (
       <div>
-        <h1 className="text-3xl font-bold underline">
-          Decoder Wheel!!!
-      </h1>
+        <div className="h-[50px]"></div>
       <div className="relative w-[700px] h-[700px] mx-auto">
       {showOuter && outerWheel.map((dice, i) => (
         <div
@@ -320,10 +318,10 @@ function App() {
       <div className="h-[900px]"></div>
       <div className="flex flex-col items-center w-full">
       <div className="flex w-full justify-center gap-10">
-        <div className="flex-col flex w-96">
-          <p className="font-['Bellota'] text-4xl mb-4 ml-8">Select your key -</p>
+        <div className="flex-col flex w-[60rem]">
+          <p className="font-['Bellota'] text-6xl mb-4 ml-8">Select your key -</p>
         <Select
-              className="ml-6 h-9 w-96 rounded"
+              className="ml-6 h-9 w-[40rem] rounded text-6xl"
               id="name"
               name="name"
               options={keyOptions}
@@ -342,11 +340,12 @@ function App() {
               }}
           />
           </div>
-        <div className="flex-col flex w-96">
-        <p className="font-['Bellota'] text-4xl mb-4">Enter your text here -</p>
-          <textarea className="outline outline-black text-4xl" onChange={handleMessageChange}></textarea>
+        <div className="flex-col flex w-[60rem]">
+        <p className="font-['Bellota'] text-6xl mb-4">Enter your message here -</p>
+          <textarea className="outline outline-black text-6xl outline-1 h-24" onChange={handleMessageChange}></textarea>
           </div>
-      </div>
+        </div>
+        <p className="font-['Bellota'] text-8xl mt-12">Key Coded Message -</p>
         <div className="w-11/12 h-56 outline outline-black mt-12 flex p-6 items-center gap-3">
           <Dice {...key.value} />
           <p className="font-['Bellota'] text-8xl">|</p>
@@ -364,7 +363,28 @@ function App() {
               return (<p className="font-['Bellota'] text-8xl" key={`codedMessage${index}`}>{char}</p>)
             }
         })}
+        </div>
+        <p className="font-['Bellota'] text-8xl mt-12">All Variations -</p>
+        {innerWheel.map((_, variantIndex) => (
+          <div className="w-11/12 h-56 outline outline-black mt-12 flex p-6 items-center gap-3" key={variantIndex}>
+          <Dice {...innerWheel[variantIndex]} />
+          <p className="font-['Bellota'] text-8xl">|</p>
+          {message && [...message].map((char,index) => {
+            console.log(char)
+            const foundIndex = letterWheel.findIndex((dice) => dice.number === char);
+            const charIndex = foundIndex === -1 ? -1 : (foundIndex + variantIndex) % letterWheel.length;
+            console.log(`charIndex: ${charIndex}`)
+            if (foundIndex !== -1) {
+              // console.log(`${outerWheel[charIndex].number}${outerWheel[charIndex].dice}`)
+              return (<Dice {...outerWheel[charIndex]} key={`codedMessage${index}`} />)
+            }
+            else
+            {
+              return (<p className="font-['Bellota'] text-8xl" key={`codedMessage${index}`}>{char}</p>)
+            }
+        })}
       </div>
+        ))}
       <div className="h-[200px]"></div>
       </div>
       </div>

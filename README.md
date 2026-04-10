@@ -1,34 +1,23 @@
-# Boilerplate: Fullstack with Sass
+## [Decoder Wheel](https://github.com/patrick-hignell/decoder-wheel)
+I wanted to create a decoder wheel which I could then print out and use in puzzles with friends. I used Typescript and React to create a web page. I chose to use D&D dice as symbols for the wheel, placed them in an array and then placed them in a circle by mapping the array, rotating each item and translating them by the radius using absolute position.
 
-## Setup
+The inner or outer wheel can then be hidden so that they can be printed out separately to make a physical copy.
 
-### What's included
+The user can select a key and enter a message which will then be coded according to the selected key. There is a list at the bottom of every possible variation of the code, displaying which key would be requried for each variation.
 
-This repo includes:
+<details open>
+<summary><em>Screenshot</em></summary>
 
-* a single, simple API endpoint (`/api/v1/fruits`)
-* frontend routing via react-router
-* an auth0 setup waiting to be configured
-* an example database module (`server/db/fruits.js`)
-* an API client module (`client/apis/fruits.js`)
-* configuration for Vitest and testing library
-* configuration for server-side debugging in VS Code
-* configuration for preprocessing css with tailwind support
+![Event Planner screenshot](https://github.com/patrick-hignell/patrick-hignell/blob/main/public/images/DecoderWheelScreenshot.png?raw=true)
 
-### Installation
+</details>
 
-#### **From the Github UI**
+<details>
+<summary><em>Next Steps</em></summary>
+  
+- Add options for the user to change the order of the symbols
+  
+- Add options for uploading custom symbols/ using letters or numbers
 
-See the instructions [here](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) to use Github's feature to create a new repo from a template.
-
-```
-git clone [your-project-ssh-address]
-cd [your-project-name]
-npm install # to install dependencies
-npm run dev # to start the dev server
-```
-
-You can find the server running on [http://localhost:3000](http://localhost:3000) and the client running on [http://localhost:5173](http://localhost:5173).
-
----
-[Provide feedback on this repo](https://docs.google.com/forms/d/e/1FAIpQLSfw4FGdWkLwMLlUaNQ8FtP2CTJdGDUv6Xoxrh19zIrJSkvT4Q/viewform?usp=pp_url&entry.1958421517=boilerplate-fullstack)
+- Add printing options
+</details>
